@@ -15,3 +15,6 @@ class Cliente(Usuarie):
     except ValueError:
       self.renda = 0.0
       print("Atenção! Renda inválida!")   
+
+  def adicionar_conta(self, conta):
+    self.contas.append(conta)
