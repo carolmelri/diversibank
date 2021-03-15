@@ -6,3 +6,12 @@ def valida_sigla_estado(uf):
     return True
   else:
     return False
+
+def exibir_lista_de_clientes(clientes):
+  if len(clientes) == 0:
+    print("Nenhum cliente cadastrado!")
+  else:
+    posicao = 0
+    for cliente in clientes:
+      print("%d: %s - %s" % (posicao, cliente.cpf, cliente.nome))
+      posicao += 1 

@@ -5,22 +5,9 @@ from poupanca import Poupanca
 from endereco import Endereco
 import util
 
-""" teste = Cliente("123.123.123-00", "Teste", "teste@teste.com", "(21)999121212", 5000.0)
-
-endereco_teste = Endereco()
-endereco_teste.logradouro = "Rua das Flores"
-endereco_teste.numero = "15 Fundos"
-endereco_teste.bairro = "Centro"
-endereco_teste.cidade = "Rio de Janeiro"
-endereco_teste.uf = "RJ"
-endereco_teste.cep = "12345-000"
-
-if util.valida_sigla_estado(endereco_teste.uf):
-  teste.endereco = endereco_teste
-
-print(teste.endereco.uf) """
-
 clientes = []
+contas_criadas = 0
+
 while True:
 
   print("-----Diversibank-----")
@@ -29,6 +16,7 @@ while True:
   print("[D]eletar")
   print("[V]isualizar todes")
   print("[C]riar conta corrente")
+  print("De[p]ositar dinheiro")
   print("[S]air")
 
   op = input("Digite uma opção: ")
@@ -36,7 +24,7 @@ while True:
   if op.upper() == "A":
     #cpf, nome, email, celular, renda
     cpf = input("Digite o CPF do cliente: ")
-    nome = input("Digite o nome d cliente: ")
+    nome = input("Digite o nome do cliente: ")
     email = input("Digite o email do cliente: ")
     celular = input("Digite o celular: ")
     renda =  input("Digite a renda: ")
@@ -51,31 +39,30 @@ while True:
   elif op.upper() == "D":
     print("Deletar")
   elif op.upper() == "V":
-    posicao = 0
-    for cliente in clientes:
-      # TODO tratar a lista de clientes vazia
-      print("%d: %s - %s" % (posicao, cliente.cpf, cliente.nome))
-      posicao += 1
+    util.exibir_lista_de_clientes(clientes)
   elif op.upper() == "C":
-    # TODO tratar a lista de clientes vazia
-    posicao = 0
-    for cliente in clientes:
-      print("%d: %s - %s" % (posicao, cliente.cpf, cliente.nome))
-      posicao += 1
+    util.exibir_lista_de_clientes(clientes)
 
     cliente_escolhido = input("Digite o número do cliente: ")
 
-    cliente = clientes[int(cliente_escolhido)]
-
-    # criar a conta
-    conta = Corrente("001-0","1")
-    # MELHORIA controlar o numero da conta 
-
+    indice = int(cliente_escolhido)
+    cliente = clientes[indice]
+    print(cliente.cpf)
+    conta = Corrente(str(contas_criadas + 1), "001")
     # atrelar ao cliente
-    cliente.adicionar_contaa(conta)
-    #sobrescrever esse cliente na lista de clientes
-    clientes.insert(int(cliente_escolhido), cliente)
+    cliente.adicionar_conta(conta)
+    #remove o cliente da lista
+    clientes.pop(indice)
+    #insere de novo na mesma posição com as informações atualizadas
+    clientes.insert(indice, cliente)
+  
+  elif op.upper() == "P":
+    util.exibir_lista_de_clientes(clientes)
+    cliente_escolhido = input("Digite o número do cliente: ")
+    conta = clientes[int(cliente_escolhido)].contas[0]
 
+    valor = input("Digite o valor a ser depositado: ")
+    conta.depositar(float(valor))
     
   elif op.upper() == "S":
     break
